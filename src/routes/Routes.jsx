@@ -52,9 +52,9 @@ const router = createBrowserRouter([
       {
         path: "update-group",
         element: (
-          <PrivetRoute>
-            <UpdateGroup />
-          </PrivetRoute>
+          // <PrivetRoute>
+          <UpdateGroup />
+          // </PrivetRoute>
         ),
       },
       // user login/registration

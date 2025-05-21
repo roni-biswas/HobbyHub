@@ -89,7 +89,12 @@ const MyGroups = () => {
                     </Link>
                   </td>
                   <td>
-                    <button className="btn btn-sm btn-warning">Update</button>
+                    <Link
+                      to={`/update-group`}
+                      className="btn btn-sm btn-warning"
+                    >
+                      Update
+                    </Link>
                   </td>
                   <td>
                     <button className="btn btn-sm btn-error">Delete</button>
@@ -133,7 +138,9 @@ const MyGroups = () => {
                 <Link to={`/group/${group.id}`}>
                   <button className="btn btn-sm btn-primary">See More</button>
                 </Link>
-                <button className="btn btn-sm btn-warning">Update</button>
+                <Link to={`/update-group`} className="btn btn-sm btn-warning">
+                  Update
+                </Link>
                 <button className="btn btn-sm btn-error">Delete</button>
               </div>
             </div>
