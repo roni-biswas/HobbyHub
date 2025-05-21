@@ -44,9 +44,9 @@ const router = createBrowserRouter([
       {
         path: "group-details",
         element: (
-          <PrivetRoute>
-            <GroupDetails />
-          </PrivetRoute>
+          // <PrivetRoute>
+          <GroupDetails />
+          // </PrivetRoute>
         ),
       },
       {
