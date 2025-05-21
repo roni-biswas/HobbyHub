@@ -6,7 +6,7 @@ import ThemeToggle from "./ThemeToggle";
 const Navbar = () => {
   const navLinkClass = ({ isActive }) =>
     `inline-block text-sm uppercase after:duration-1000 ease-out after:block after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-red-500 after:transition-transform hover:after:origin-bottom-left hover:after:scale-x-100 ${
-      isActive ? "text-primary" : "text-base-200"
+      isActive ? "text-primary" : ""
     }`;
   const links = (
     <>
@@ -39,7 +39,7 @@ const Navbar = () => {
   );
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50  bg-opacity-30  shadow-md backdrop-blur-md bg-base-100/30
+      className={`fixed top-0 left-0 right-0 z-50 border-b-1 border-b-white/40 bg-opacity-30  shadow-md backdrop-blur-md bg-base-100/30
         }`}
     >
       <div className="navbar p-0 py-3 max-w-screen-7xl mx-auto px-4 md:px-12 lg:px-16 xl:px-24">

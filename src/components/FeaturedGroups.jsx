@@ -7,15 +7,13 @@ const sampleGroups = [
     name: "Book Club",
     description:
       "A group for book lovers to discuss and share their favorite reads.",
-    imageURL:
-      "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=400&q=60",
+    imageURL: "https://i.ibb.co/LDjhmH9t/photo-1512820790803-83ca734da794.jpg",
   },
   {
     _id: "2",
     name: "Photography Lovers",
     description: "Share photos and tips for photography enthusiasts.",
-    imageURL:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=60",
+    imageURL: "https://i.ibb.co/ycQFXPR4/photo-1506744038136-46273834b3fb.jpg",
   },
   {
     _id: "3",

@@ -4,15 +4,15 @@ import { Link } from "react-router";
 
 const Footer = () => {
   return (
-    <footer className="px-4 divide-y bg-gray-100  text-gray-800">
+    <footer className="px-4 divide-y bg-gray-900  text-gray-100">
       <div className="max-w-screen-7xl px-4 md:px-12 lg:px-16 xl:px-24 flex flex-col justify-between py-10 mx-auto space-y-8 lg:flex-row lg:space-y-0">
         <aside>
           <img className="w-[180px]" src={brandLogo} alt="Brand Logo" />
-          <p className="text-base-200">A Local Hobby Group Organizer</p>
+          <p className="text-accent">A Local Hobby Group Organizer</p>
         </aside>
         <div className="grid grid-cols-2 text-sm gap-x-3 gap-y-8 lg:w-2/3 sm:grid-cols-4">
           <div className="space-y-3">
-            <h3 className="tracking-wide uppercase text-gray-900 font-bold">
+            <h3 className="tracking-wide uppercase text-accent font-bold">
               Product
             </h3>
             <ul className="space-y-1">
@@ -39,7 +39,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="space-y-3">
-            <h3 className="tracking-wide uppercase text-gray-900 font-bold">
+            <h3 className="tracking-wide uppercase text-accent font-bold">
               Company
             </h3>
             <ul className="space-y-1">
@@ -56,7 +56,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="space-y-3">
-            <h3 className="uppercase text-gray-900 font-bold">Developers</h3>
+            <h3 className="uppercase text-accent font-bold">Developers</h3>
             <ul className="space-y-1">
               <li>
                 <Link rel="noopener noreferrer" to="/">
@@ -76,9 +76,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="space-y-3">
-            <div className="uppercase text-gray-900 font-bold">
-              Social media
-            </div>
+            <div className="uppercase text-accent font-bold">Social media</div>
             <div className="flex justify-start space-x-3">
               <a
                 rel="noopener noreferrer"
@@ -128,7 +126,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="py-6 text-sm text-center text-base-300">
+      <div className="py-6 text-sm text-center text-gray-500">
         <p>
           Copyright © {new Date().getFullYear()} - All right reserved by Hobby
           Group Organizer

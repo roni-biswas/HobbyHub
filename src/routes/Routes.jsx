@@ -28,9 +28,9 @@ const router = createBrowserRouter([
       {
         path: "create-group",
         element: (
-          <PrivetRoute>
-            <CreateGroup />
-          </PrivetRoute>
+          // <PrivetRoute>
+          <CreateGroup />
+          // </PrivetRoute>
         ),
       },
       {
