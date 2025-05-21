@@ -36,9 +36,9 @@ const router = createBrowserRouter([
       {
         path: "my-group",
         element: (
-          <PrivetRoute>
-            <MyGroups />
-          </PrivetRoute>
+          // <PrivetRoute>
+          <MyGroups />
+          // </PrivetRoute>
         ),
       },
       {
