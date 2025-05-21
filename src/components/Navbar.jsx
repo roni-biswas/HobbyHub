@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router";
 import brandLogo from "../assets/brand-logo.png";
+import avatarIcon from "../assets/avatar.png";
 import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
@@ -39,7 +40,7 @@ const Navbar = () => {
   );
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 border-b-1 border-b-white/40 bg-opacity-30  shadow-md backdrop-blur-md bg-base-100/30
+      className={`fixed top-0 left-0 right-0 z-50 border-b-1 border-b-white/40 bg-opacity-30 shadow-md backdrop-blur-lg bg-base-100/30
         }`}
     >
       <div className="navbar p-0 py-3 max-w-screen-7xl mx-auto px-4 md:px-12 lg:px-16 xl:px-24">
@@ -86,7 +87,7 @@ const Navbar = () => {
           {/* profiles */}
           <div className="avatar">
             <div className="ring-primary ring-offset-base-100 w-7 rounded-full ring-2 ring-offset-2">
-              <img src="https://img.daisyui.com/images/profile/demo/spiderperson@192.webp" />
+              <img src={avatarIcon} />
             </div>
           </div>
         </div>

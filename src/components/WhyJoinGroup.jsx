@@ -43,7 +43,7 @@ const WhyJoinGroup = () => {
   return (
     <section className="bg-gradient-to-b from-indigo-50 to-white px-4 py-14 md:py-20">
       <div className="text-center max-w-screen-7xl mx-auto px-4 md:px-12 lg:px-16 xl:px-24">
-        <h2 className="text-xl md:text-2xl font-bold mb-4">
+        <h2 className="text-xl md:text-2xl text-gray-950 font-bold mb-4">
           🌟 Why Join a Hobby Group?
         </h2>
         <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base mb-12">
