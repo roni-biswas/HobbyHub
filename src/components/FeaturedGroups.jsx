@@ -48,7 +48,7 @@ const sampleGroups = [
 function FeaturedGroups() {
   return (
     <div className="py-24 max-w-screen-7xl mx-auto px-4 md:px-12 lg:px-16 xl:px-24">
-      <h2 className="text-2xl font-bold mb-4">Featured Groups</h2>
+      <h2 className="text-2xl text-primary font-bold mb-4">Featured Groups</h2>
       <Fade damping>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {sampleGroups.map((group) => (

@@ -13,14 +13,14 @@ const categories = [
 
 const CreateGroup = ({ user }) => {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-24">
+    <div className="min-h-screen flex items-center justify-center px-4 py-24 pt-32">
       <div className="bg-white/80 backdrop-blur-lg shadow-xl p-8 md:p-10 rounded-2xl w-full max-w-3xl border border-gray-200">
-        <h2 className="text-3xl font-bold text-center text-secondary mb-6">
+        <h2 className="text-3xl font-bold text-center text-primary mb-6">
           Create a New Hobby Group
         </h2>
         <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="form-control">
-            <label className="label font-semibold text-base-300 text-base-300">
+            <label className="label font-semibold text-base-300">
               Group Name
             </label>
             <input
@@ -122,7 +122,7 @@ const CreateGroup = ({ user }) => {
           </div>
 
           <div className="form-control md:col-span-2 mt-4">
-            <button className="btn btn-primary w-full text-lg">
+            <button className="btn btn-secondary w-full text-lg">
               Create Group
             </button>
           </div>
