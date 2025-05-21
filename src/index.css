@@ -1,2 +1,29 @@
+/* import google fonts -> railway and roboto */
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
 @import "tailwindcss";
 @plugin "daisyui";
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #d5451b;
+  --color-secondary: #10b981;
+  --color-base-200: #111827;
+  --color-base-300: #6b7280;
+  --color-base-400: #f9fafb;
+  --color-accent: #e5e7eb;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Raleway", sans-serif;
+}
