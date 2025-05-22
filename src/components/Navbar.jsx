@@ -1,14 +1,25 @@
-import React, { use } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
 import brandLogo from "../assets/brand-logo.png";
 import avatarIcon from "../assets/avatar.png";
 import ThemeToggle from "./ThemeToggle";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
+import { Tooltip } from "react-tooltip";
 
 const Navbar = () => {
   const { user, signOutUser } = use(AuthContext);
+  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user?.email) {
+      fetch(`http://localhost:3000/users/${user.email}`)
+        .then((res) => res.json())
+        .then((data) => setUserData(data))
+        .catch((err) => console.error("Error fetching user data:", err));
+    }
+  }, [user?.email]);
 
   const handleLogOut = () => {
     Swal.fire({
@@ -127,13 +138,20 @@ const Navbar = () => {
           {/* Theme and Profile */}
           <ThemeToggle />
           {/* profiles */}
-          {user && (
-            <div className="avatar">
+          {user && userData ? (
+            <div
+              className="avatar"
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content={userData.name}
+            >
               <div className="ring-primary ring-offset-base-100 w-7 rounded-full ring-2 ring-offset-2">
-                <img src={avatarIcon} />
+                <img src={userData.photo_url || avatarIcon} />
               </div>
             </div>
+          ) : (
+            ""
           )}
+          <Tooltip id="my-tooltip" />
         </div>
       </div>
     </header>
