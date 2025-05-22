@@ -1,8 +1,57 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLoaderData } from "react-router";
+import Swal from "sweetalert2";
+import { AuthContext } from "../context/AuthContext";
 
 const MyGroups = () => {
-  const groups = useLoaderData();
+  const { user } = useContext(AuthContext);
+  const groupData = useLoaderData();
+  const [groups, setGroups] = useState([...groupData]);
+
+  useEffect(() => {
+    if (user?.email) {
+      fetch(`http://localhost:3000/groupsByEmail/${user.email}`)
+        .then((res) => res.json())
+        .then((data) => setGroups(data))
+        .catch((err) => console.error("Failed to fetch groups:", err));
+    }
+  }, [user?.email]);
+
+  // delete group
+  const handleDeleteGroup = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // start deleting the options
+        fetch(`http://localhost:3000/groupsById/${_id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.deletedCount) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your Group has been Deleted.",
+                icon: "success",
+              });
+
+              // remove coffee from the state
+              const remainingCoffees = groups.filter(
+                (group) => group._id !== _id
+              );
+              setGroups(remainingCoffees);
+            }
+          });
+      }
+    });
+  };
 
   return (
     <div className="max-w-screen-7xl mx-auto px-4 md:px-12 lg:px-16 xl:px-24 py-12 pt-32">
@@ -69,7 +118,12 @@ const MyGroups = () => {
                     </Link>
                   </td>
                   <td>
-                    <button className="btn btn-sm btn-error">Delete</button>
+                    <button
+                      onClick={() => handleDeleteGroup(group._id)}
+                      className="btn btn-sm btn-error"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -117,7 +171,12 @@ const MyGroups = () => {
                 >
                   Update
                 </Link>
-                <button className="btn btn-sm btn-error">Delete</button>
+                <button
+                  onClick={() => handleDeleteGroup(group._id)}
+                  className="btn btn-sm btn-error"
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))}
