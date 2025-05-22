@@ -45,12 +45,15 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "group-details",
+        path: "/group-details/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/groups/${params.id}`),
         element: (
           <PrivetRoute>
             <GroupDetails />
           </PrivetRoute>
         ),
+        hydrateFallbackElement: <Loading />,
       },
       {
         path: "update-group",

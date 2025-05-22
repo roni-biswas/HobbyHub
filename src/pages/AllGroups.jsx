@@ -41,18 +41,18 @@ const AllGroups = () => {
                     <div className="w-16 h-16 overflow-hidden rounded-lg shadow">
                       <img
                         src={group.photo_url}
-                        alt={group.name}
+                        alt={group.group_name}
                         className="w-full h-full object-cover"
                       />
                     </div>
                   </td>
-                  <td className="font-semibold">{group.name}</td>
+                  <td className="font-semibold">{group.group_name}</td>
                   <td>{group.category}</td>
                   <td>{group.location}</td>
                   <td>{group.max_members}</td>
                   <td>{group.date}</td>
                   <td>
-                    <Link to={`/group-details`}>
+                    <Link to={`/group-details/${group._id}`}>
                       <button className="btn btn-sm btn-secondary">
                         See More
                       </button>
