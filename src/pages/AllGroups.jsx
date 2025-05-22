@@ -1,36 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router";
+import React from "react";
+import { Link, useLoaderData } from "react-router";
 
 const AllGroups = () => {
-  const [groups, setGroups] = useState([]);
-
-  // Dummy data – replace with API or context later
-  useEffect(() => {
-    const dummyGroups = [
-      {
-        id: "1",
-        name: "Urban Sketchers",
-        category: "Drawing & Painting",
-        description: "We meet to sketch cityscapes and architecture.",
-        location: "Dhaka Art Center",
-        maxMembers: 15,
-        startDate: "2025-06-01",
-        image: "https://i.ibb.co/ycQFXPR4/photo-1506744038136-46273834b3fb.jpg",
-      },
-      {
-        id: "2",
-        name: "Weekend Gamers",
-        category: "Video Gaming",
-        description: "Console and PC gaming on weekends!",
-        location: "Online (Discord)",
-        maxMembers: 25,
-        startDate: "2025-07-15",
-        image: "https://i.ibb.co/ycQFXPR4/photo-1506744038136-46273834b3fb.jpg",
-      },
-      // Add more groups...
-    ];
-    setGroups(dummyGroups);
-  }, []);
+  const groups = useLoaderData();
 
   return (
     <div className="max-w-screen-7xl mx-auto px-4 md:px-12 lg:px-16 xl:px-24 py-12 pt-32">
@@ -57,7 +29,7 @@ const AllGroups = () => {
             <tbody>
               {groups.map((group, index) => (
                 <tr
-                  key={group.id}
+                  key={group._id}
                   className={`even:bg-gray-800 even:text-white text-gray-800 
                         transition-all duration-200 
                         hover:bg-indigo-100 hover:even:bg-indigo-700 
@@ -68,7 +40,7 @@ const AllGroups = () => {
                   <td>
                     <div className="w-16 h-16 overflow-hidden rounded-lg shadow">
                       <img
-                        src={group.image}
+                        src={group.photo_url}
                         alt={group.name}
                         className="w-full h-full object-cover"
                       />
@@ -77,8 +49,8 @@ const AllGroups = () => {
                   <td className="font-semibold">{group.name}</td>
                   <td>{group.category}</td>
                   <td>{group.location}</td>
-                  <td>{group.maxMembers}</td>
-                  <td>{group.startDate}</td>
+                  <td>{group.max_members}</td>
+                  <td>{group.date}</td>
                   <td>
                     <Link to={`/group-details`}>
                       <button className="btn btn-sm btn-secondary">

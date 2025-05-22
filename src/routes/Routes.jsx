@@ -10,6 +10,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import GroupDetails from "../pages/GroupDetails";
 import UpdateGroup from "../pages/UpdateGroup";
+import Loading from "../components/Loading";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,8 @@ const router = createBrowserRouter([
       {
         path: "all-groups",
         Component: AllGroups,
+        loader: () => fetch("http://localhost:3000/groups"),
+        hydrateFallbackElement: <Loading />,
       },
       // authentication/authorization route
       {
