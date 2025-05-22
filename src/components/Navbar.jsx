@@ -1,10 +1,39 @@
-import React from "react";
-import { Link, NavLink } from "react-router";
+import React, { use } from "react";
+import { Link, NavLink, useNavigate } from "react-router";
 import brandLogo from "../assets/brand-logo.png";
 import avatarIcon from "../assets/avatar.png";
 import ThemeToggle from "./ThemeToggle";
+import { AuthContext } from "../context/AuthContext";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
+  const { user, signOutUser } = use(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogOut = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "you want to be logout!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // user sign out
+        signOutUser().then(() => {
+          Swal.fire({
+            title: "Logout!",
+            text: "You are successfully logged out!",
+            icon: "success",
+          });
+          navigate("/");
+        });
+      }
+    });
+  };
+
   const navLinkClass = ({ isActive }) =>
     `inline-block text-sm uppercase after:duration-1000 ease-out after:block after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-red-500 after:transition-transform hover:after:origin-bottom-left hover:after:scale-x-100 ${
       isActive ? "text-primary" : ""
@@ -21,21 +50,34 @@ const Navbar = () => {
           All Groups
         </NavLink>
       </li>
-      <li>
-        <NavLink to="/create-group" className={navLinkClass}>
-          Create Group
-        </NavLink>
-      </li>
+      {user && (
+        <li>
+          <NavLink to="/create-group" className={navLinkClass}>
+            Create Group
+          </NavLink>
+        </li>
+      )}
       <li>
         <NavLink to="/my-group" className={navLinkClass}>
           My Groups
         </NavLink>
       </li>
-      <li>
-        <NavLink to="/login" className={navLinkClass}>
-          Login
-        </NavLink>
-      </li>
+      {!user ? (
+        <li>
+          <NavLink to="/login" className={navLinkClass}>
+            Login
+          </NavLink>
+        </li>
+      ) : (
+        <li>
+          <button
+            onClick={handleLogOut}
+            className={`inline-block text-sm uppercase after:duration-1000 ease-out after:block after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-red-500 after:transition-transform hover:after:origin-bottom-left hover:after:scale-x-100 cursor-pointer`}
+          >
+            Logout
+          </button>
+        </li>
+      )}
     </>
   );
   return (
@@ -85,11 +127,13 @@ const Navbar = () => {
           {/* Theme and Profile */}
           <ThemeToggle />
           {/* profiles */}
-          <div className="avatar">
-            <div className="ring-primary ring-offset-base-100 w-7 rounded-full ring-2 ring-offset-2">
-              <img src={avatarIcon} />
+          {user && (
+            <div className="avatar">
+              <div className="ring-primary ring-offset-base-100 w-7 rounded-full ring-2 ring-offset-2">
+                <img src={avatarIcon} />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </header>

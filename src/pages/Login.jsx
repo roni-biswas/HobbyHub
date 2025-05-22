@@ -1,7 +1,45 @@
-import React from "react";
-import { Link } from "react-router";
+import React, { use } from "react";
+import { Link, Navigate, useLocation, useNavigate } from "react-router";
+import { AuthContext } from "../context/AuthContext";
+import Swal from "sweetalert2";
 
 const Login = () => {
+  const { user, signInUser } = use(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  if (user) return <Navigate to="/" />;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const email = formData.get("email");
+    const password = formData.get("password");
+    // sign in user
+    signInUser(email, password)
+      .then((res) => {
+        if (res.user) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "User Successfully Sign-In!",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          navigate(location.state || "/");
+        }
+      })
+      .catch((err) => {
+        if (err.code === "auth/invalid-credential") {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Invalid Email or Password, Try again!",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        }
+      });
+  };
   return (
     <div className="py-16 pt-18 md:py-24 px-4">
       <div className="card bg-base-200 w-full mx-auto max-w-sm shrink-0 sm:shadow-2xl my-8">
@@ -9,7 +47,7 @@ const Login = () => {
           <h2 className="text-2xl text-center font-semibold text-primary my-5">
             Login your Account
           </h2>
-          <form className="fieldset">
+          <form onSubmit={handleSubmit} className="fieldset">
             <label className="label text-gray-200 text-base">Email</label>
             <input
               type="email"

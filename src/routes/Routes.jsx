@@ -28,33 +28,33 @@ const router = createBrowserRouter([
       {
         path: "create-group",
         element: (
-          // <PrivetRoute>
-          <CreateGroup />
-          // </PrivetRoute>
+          <PrivetRoute>
+            <CreateGroup />
+          </PrivetRoute>
         ),
       },
       {
         path: "my-group",
         element: (
-          // <PrivetRoute>
-          <MyGroups />
-          // </PrivetRoute>
+          <PrivetRoute>
+            <MyGroups />
+          </PrivetRoute>
         ),
       },
       {
         path: "group-details",
         element: (
-          // <PrivetRoute>
-          <GroupDetails />
-          // </PrivetRoute>
+          <PrivetRoute>
+            <GroupDetails />
+          </PrivetRoute>
         ),
       },
       {
         path: "update-group",
         element: (
-          // <PrivetRoute>
-          <UpdateGroup />
-          // </PrivetRoute>
+          <PrivetRoute>
+            <UpdateGroup />
+          </PrivetRoute>
         ),
       },
       // user login/registration
