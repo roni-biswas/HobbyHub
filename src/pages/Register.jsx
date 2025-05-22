@@ -6,7 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
 const Register = () => {
-  const { createUser } = use(AuthContext);
+  const { createUser, googleLoginUser } = use(AuthContext);
   const navigate = useNavigate();
   const [passwordValidations, setPasswordValidations] = useState({
     length: false,
@@ -32,49 +32,126 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
     const { email, password, ...restFormData } = Object.fromEntries(
       formData.entries()
     );
-    if (Object.values(passwordValidations).every(Boolean)) {
-      createUser(email, password)
-        .then((result) => {
-          const userProfile = {
-            email,
-            ...restFormData,
-            creationTime: result.user?.metadata?.creationTime,
-            lastSignInTime: result.user?.metadata?.lastSignInTime,
-          };
-          // save profile in the database
-          if (result.user) {
-            fetch("http://localhost:3000/users", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(userProfile),
-            })
-              .then((res) => res.json())
-              .then((data) => {
-                if (data.insertedId) {
-                  Swal.fire({
-                    title: "User created Successfully!",
-                    icon: "success",
-                    draggable: true,
-                  });
-                  form.reset();
-                  navigate("/");
-                }
-              });
-          }
-        })
-        .catch((error) => {
-          console.log(error.code);
+
+    // Check password validity first
+    if (!Object.values(passwordValidations).every(Boolean)) return;
+
+    try {
+      // 🔍 Check if email already exists in the database
+      const res = await fetch(`http://localhost:3000/users?email=${email}`);
+      const existingUsers = await res.json();
+
+      if (existingUsers.length > 0) {
+        Swal.fire({
+          icon: "error",
+          title: "Email Already Exists",
+          text: "Please try logging in or use another email address.",
         });
+        return;
+      }
+
+      // If not exists, create user in Firebase
+      const result = await createUser(email, password);
+      const userProfile = {
+        email,
+        ...restFormData,
+        creationTime: result.user?.metadata?.creationTime,
+        lastSignInTime: result.user?.metadata?.lastSignInTime,
+      };
+
+      // Save to database
+      const dbRes = await fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userProfile),
+      });
+
+      const dbData = await dbRes.json();
+      if (dbData.insertedId) {
+        Swal.fire({
+          title: "User created Successfully!",
+          icon: "success",
+          draggable: true,
+        });
+        form.reset();
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Registration Error:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: error.message || "Something went wrong.",
+      });
     }
+  };
+
+  // sign up with google
+  const handleGoogleLogin = () => {
+    googleLoginUser()
+      .then(async (result) => {
+        const { user } = result;
+        const userProfile = {
+          email: user.email,
+          name: user.displayName,
+          photo_url: user.photoURL,
+          creationTime: user?.metadata?.creationTime,
+          lastSignInTime: user?.metadata?.lastSignInTime,
+        };
+
+        try {
+          // Check if user exists by email
+          const res = await fetch(
+            `http://localhost:3000/users?email=${user.email}`
+          );
+          const existingUsers = await res.json();
+
+          // If not found, register new user
+          if (existingUsers.length === 0) {
+            const dbRes = await fetch("http://localhost:3000/users", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(userProfile),
+            });
+            const dbData = await dbRes.json();
+
+            if (dbData.insertedId) {
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Successfully Registered with Google!",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          }
+
+          // Navigate after login (either existing or new user)
+          navigate(location.state || "/");
+        } catch (error) {
+          console.error("Google login error:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Login Failed",
+            text: error.message || "Something went wrong with Google login.",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Firebase error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Google Login Error",
+          text: error.message || "Could not complete Google login.",
+        });
+      });
   };
 
   return (
@@ -175,7 +252,10 @@ const Register = () => {
             </p>
           </form>
           {/* Google */}
-          <button className="btn bg-white text-black border-[#e5e5e5]">
+          <button
+            onClick={handleGoogleLogin}
+            className="btn bg-white text-black border-[#e5e5e5]"
+          >
             <svg
               aria-label="Google logo"
               width="16"

@@ -4,10 +4,11 @@ import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
 const Login = () => {
-  const { user, signInUser } = use(AuthContext);
+  const { user, signInUser, googleLoginUser } = use(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   if (user) return <Navigate to="/" />;
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -21,7 +22,7 @@ const Login = () => {
           Swal.fire({
             position: "top-end",
             icon: "success",
-            title: "User Successfully Sign-In!",
+            title: "User Successfully Logged-In!",
             showConfirmButton: false,
             timer: 2000,
           });
@@ -40,6 +41,67 @@ const Login = () => {
         }
       });
   };
+
+  const handleGoogleLogin = () => {
+    googleLoginUser()
+      .then(async (result) => {
+        const { user } = result;
+        const userProfile = {
+          email: user.email,
+          name: user.displayName,
+          photo_url: user.photoURL,
+          creationTime: user?.metadata?.creationTime,
+          lastSignInTime: user?.metadata?.lastSignInTime,
+        };
+
+        try {
+          // Check if user exists by email
+          const res = await fetch(
+            `http://localhost:3000/users?email=${user.email}`
+          );
+          const existingUsers = await res.json();
+
+          // If not found, register new user
+          if (existingUsers.length === 0) {
+            const dbRes = await fetch("http://localhost:3000/users", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(userProfile),
+            });
+            const dbData = await dbRes.json();
+
+            if (dbData.insertedId) {
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Successfully Registered with Google!",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          }
+
+          // Navigate after login (either existing or new user)
+          navigate(location.state || "/");
+        } catch (error) {
+          console.error("Google login error:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Login Failed",
+            text: error.message || "Something went wrong with Google login.",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Firebase error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Google Login Error",
+          text: error.message || "Could not complete Google login.",
+        });
+      });
+  };
+
   return (
     <div className="py-16 pt-18 md:py-24 px-4">
       <div className="card bg-base-200 w-full mx-auto max-w-sm shrink-0 sm:shadow-2xl my-8">
@@ -78,7 +140,10 @@ const Login = () => {
             </p>
           </form>
           {/* Google */}
-          <button className="btn bg-white text-black border-[#e5e5e5]">
+          <button
+            onClick={handleGoogleLogin}
+            className="btn bg-white text-black border-[#e5e5e5]"
+          >
             <svg
               aria-label="Google logo"
               width="16"
