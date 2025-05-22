@@ -1,4 +1,7 @@
-import React from "react";
+import React, { use, useEffect, useState } from "react";
+import { useLoaderData, useNavigate } from "react-router";
+import { AuthContext } from "../context/AuthContext";
+import Swal from "sweetalert2";
 
 const categories = [
   "Drawing & Painting",
@@ -11,20 +14,76 @@ const categories = [
   "Writing",
 ];
 
-const UpdateGroup = ({ user }) => {
+const UpdateGroup = () => {
+  const { user } = use(AuthContext);
+  const [users, setUsers] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user?.email) {
+      fetch(`http://localhost:3000/users/${user.email}`)
+        .then((res) => res.json())
+        .then((data) => setUsers(data))
+        .catch((err) => console.error("Error fetching user data:", err));
+    }
+  }, [user?.email]);
+
+  const {
+    _id,
+    group_name,
+    category,
+    description,
+    location,
+    max_members,
+    date,
+    photo_url,
+  } = useLoaderData();
+
+  const handleUpdateGroup = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const updatedGroup = Object.fromEntries(formData.entries());
+
+    // update user info in the db
+    fetch(`http://localhost:3000/groupsById/${_id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedGroup),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.modifiedCount) {
+          Swal.fire({
+            title: "Group Successfully Updated!",
+            icon: "success",
+            draggable: true,
+          });
+          navigate(`/my-group/${users.email}`);
+        }
+      });
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-24 pt-32">
       <div className="bg-white/80 backdrop-blur-lg shadow-xl p-8 md:p-10 rounded-2xl w-full max-w-3xl border border-gray-200">
         <h2 className="text-3xl font-bold text-center text-primary mb-6">
           Update Hobby Group
         </h2>
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form
+          onSubmit={handleUpdateGroup}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
           <div className="form-control">
             <label className="label font-semibold text-base-300">
               Group Name
             </label>
             <input
               type="text"
+              name="group_name"
+              defaultValue={group_name}
               placeholder="Enter group name"
               className="input input-bordered w-full"
             />
@@ -34,12 +93,18 @@ const UpdateGroup = ({ user }) => {
             <label className="label font-semibold text-base-300">
               Hobby Category
             </label>
-            <select className="select select-bordered w-full">
-              <option disabled selected>
+            <select
+              name="category"
+              defaultValue={category}
+              className="select select-bordered w-full"
+            >
+              <option disabled defaultValue="">
                 Select a category
               </option>
-              {categories.map((category, idx) => (
-                <option key={idx}>{category}</option>
+              {categories.map((cat, idx) => (
+                <option key={idx} value={cat}>
+                  {cat}
+                </option>
               ))}
             </select>
           </div>
@@ -51,6 +116,8 @@ const UpdateGroup = ({ user }) => {
               </label>
               <input
                 type="text"
+                name="description"
+                defaultValue={description}
                 className="input input-bordered w-full py-0"
                 placeholder="Write a short description..."
               ></input>
@@ -63,6 +130,8 @@ const UpdateGroup = ({ user }) => {
             </label>
             <input
               type="text"
+              name="location"
+              defaultValue={location}
               placeholder="Enter location"
               className="input input-bordered w-full"
             />
@@ -74,6 +143,8 @@ const UpdateGroup = ({ user }) => {
             </label>
             <input
               type="number"
+              name="max_members"
+              defaultValue={max_members}
               placeholder="e.g. 10"
               className="input input-bordered w-full"
             />
@@ -83,7 +154,12 @@ const UpdateGroup = ({ user }) => {
             <label className="label font-semibold text-base-300">
               Start Date
             </label>
-            <input type="date" className="input input-bordered w-full" />
+            <input
+              type="date"
+              name="data"
+              defaultValue={date}
+              className="input input-bordered w-full"
+            />
           </div>
 
           <div className="form-control">
@@ -92,6 +168,8 @@ const UpdateGroup = ({ user }) => {
             </label>
             <input
               type="url"
+              name="photo_url"
+              defaultValue={photo_url}
               placeholder="https://example.com/image.jpg"
               className="input input-bordered w-full"
             />
@@ -103,7 +181,8 @@ const UpdateGroup = ({ user }) => {
             </label>
             <input
               type="text"
-              value={user?.name || "Guest"}
+              name="name"
+              value={users?.name || "Guest"}
               readOnly
               className="input input-bordered bg-gray-100 text-gray-500 w-full"
             />
@@ -115,14 +194,15 @@ const UpdateGroup = ({ user }) => {
             </label>
             <input
               type="email"
-              value={user?.email || "guest@example.com"}
+              name="email"
+              value={users?.email || "guest@example.com"}
               readOnly
               className="input input-bordered bg-gray-100 text-gray-500 w-full"
             />
           </div>
 
           <div className="form-control md:col-span-2 mt-4">
-            <button className="btn btn-secondary w-full text-lg">
+            <button type="submit" className="btn btn-secondary w-full text-lg">
               Update Group
             </button>
           </div>

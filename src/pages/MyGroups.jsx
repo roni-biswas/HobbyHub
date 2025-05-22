@@ -62,7 +62,7 @@ const MyGroups = () => {
                   </td>
                   <td>
                     <Link
-                      to={`/update-group`}
+                      to={`/update-group/${group._id}`}
                       className="btn btn-sm btn-warning"
                     >
                       Update
@@ -111,7 +111,10 @@ const MyGroups = () => {
                 <Link to={`/group-details/${group._id}`}>
                   <button className="btn btn-sm btn-primary">See More</button>
                 </Link>
-                <Link to={`/update-group`} className="btn btn-sm btn-warning">
+                <Link
+                  to={`/update-group/${group._id}`}
+                  className="btn btn-sm btn-warning"
+                >
                   Update
                 </Link>
                 <button className="btn btn-sm btn-error">Delete</button>
