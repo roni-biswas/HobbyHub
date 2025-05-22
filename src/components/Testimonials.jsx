@@ -6,21 +6,23 @@ const testimonials = [
     role: "Painter & Art Lover",
     feedback:
       "Joining HobbyHub has completely changed my creative journey. I've met so many talented artists and learned techniques I never imagined!",
-    avatar: "https://i.ibb.co/vXSPdDH/avatar1.png",
+    avatar:
+      "https://i.ibb.co/Myjd5gbB/christina-wocintechchat-com-SJv-Dxw0azqw-unsplash.jpg",
   },
   {
     name: "Farhan Ahmed",
     role: "Gaming Enthusiast",
     feedback:
       "Being part of a gaming group helped me improve my strategy and make amazing friends who love the same games!",
-    avatar: "https://i.ibb.co/tKbVVrP/avatar2.png",
+    avatar:
+      "https://i.ibb.co/XMkSJVb/christian-buehner-DIt-Ylc26z-VI-unsplash.jpg",
   },
   {
     name: "Nusrat Jahan",
     role: "Writer & Blogger",
     feedback:
       "The writing group at HobbyHub motivated me to finally start my blog. Weekly sessions keep me inspired and disciplined.",
-    avatar: "https://i.ibb.co/7rTgDPf/avatar3.png",
+    avatar: "https://i.ibb.co/YvDdzdQ/ruben-ramirez-hglwfa4kj-o-unsplash.jpg",
   },
 ];
 

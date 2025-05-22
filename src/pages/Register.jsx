@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { MdDone } from "react-icons/md";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FaEyeSlash, FaRegEye } from "react-icons/fa";
+import { AuthContext } from "../context/AuthContext";
+import Swal from "sweetalert2";
 
 const Register = () => {
+  const { createUser } = use(AuthContext);
+  const navigate = useNavigate();
   const [passwordValidations, setPasswordValidations] = useState({
     length: false,
     digit: false,
@@ -15,17 +19,62 @@ const Register = () => {
   // password validation
   const handlePasswordValidation = (value) => {
     // const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
-    const isEightCar = /^.{6,}$/;
+    const isSixCar = /^.{6,}$/;
     const digitRegex = /(?=.*\d)/;
     const upperCaseRegex = /(?=.*[A-Z])/;
     const lowerCaseRegex = /(?=.*[a-z])/;
 
     setPasswordValidations({
-      length: isEightCar.test(value),
+      length: isSixCar.test(value),
       digit: digitRegex.test(value),
       lower: lowerCaseRegex.test(value),
       upper: upperCaseRegex.test(value),
     });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const { email, password, ...restFormData } = Object.fromEntries(
+      formData.entries()
+    );
+    if (Object.values(passwordValidations).every(Boolean)) {
+      createUser(email, password)
+        .then((result) => {
+          const userProfile = {
+            email,
+            ...restFormData,
+            creationTime: result.user?.metadata?.creationTime,
+            lastSignInTime: result.user?.metadata?.lastSignInTime,
+          };
+          // save profile in the database
+          if (result.user) {
+            fetch("http://localhost:3000/users", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(userProfile),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.insertedId) {
+                  Swal.fire({
+                    title: "User created Successfully!",
+                    icon: "success",
+                    draggable: true,
+                  });
+                  form.reset();
+                  navigate("/");
+                }
+              });
+          }
+        })
+        .catch((error) => {
+          console.log(error.code);
+        });
+    }
   };
 
   return (
@@ -35,7 +84,7 @@ const Register = () => {
           <h2 className="text-2xl text-center font-semibold text-primary my-5">
             Register your account
           </h2>
-          <form className="fieldset">
+          <form onSubmit={handleSubmit} className="fieldset">
             <label className="label text-gray-200 text-base">Your Name</label>
             <input
               type="text"
