@@ -51,7 +51,7 @@ const CreateGroup = () => {
             draggable: true,
           });
           form.reset();
-          navigate("/my-group");
+          navigate(`/my-group/${user.email}`);
         }
       });
   };

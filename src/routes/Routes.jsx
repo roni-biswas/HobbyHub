@@ -37,17 +37,20 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "my-group",
+        path: "/my-group/:email",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/groupsByEmail/${params.email}`),
         element: (
           <PrivetRoute>
             <MyGroups />
           </PrivetRoute>
         ),
+        hydrateFallbackElement: <Loading />,
       },
       {
         path: "/group-details/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/groups/${params.id}`),
+          fetch(`http://localhost:3000/groupsById/${params.id}`),
         element: (
           <PrivetRoute>
             <GroupDetails />

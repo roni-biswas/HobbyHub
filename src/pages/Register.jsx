@@ -43,53 +43,31 @@ const Register = () => {
     // Check password validity first
     if (!Object.values(passwordValidations).every(Boolean)) return;
 
-    try {
-      // 🔍 Check if email already exists in the database
-      const res = await fetch(`http://localhost:3000/users?email=${email}`);
-      const existingUsers = await res.json();
+    // If not exists, create user in Firebase
+    const result = await createUser(email, password);
+    const userProfile = {
+      email,
+      ...restFormData,
+      creationTime: result.user?.metadata?.creationTime,
+      lastSignInTime: result.user?.metadata?.lastSignInTime,
+    };
 
-      if (existingUsers.length > 0) {
-        Swal.fire({
-          icon: "error",
-          title: "Email Already Exists",
-          text: "Please try logging in or use another email address.",
-        });
-        return;
-      }
+    // Save to database
+    const dbRes = await fetch("http://localhost:3000/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userProfile),
+    });
 
-      // If not exists, create user in Firebase
-      const result = await createUser(email, password);
-      const userProfile = {
-        email,
-        ...restFormData,
-        creationTime: result.user?.metadata?.creationTime,
-        lastSignInTime: result.user?.metadata?.lastSignInTime,
-      };
-
-      // Save to database
-      const dbRes = await fetch("http://localhost:3000/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userProfile),
-      });
-
-      const dbData = await dbRes.json();
-      if (dbData.insertedId) {
-        Swal.fire({
-          title: "User created Successfully!",
-          icon: "success",
-          draggable: true,
-        });
-        form.reset();
-        navigate("/");
-      }
-    } catch (error) {
-      console.error("Registration Error:", error);
+    const dbData = await dbRes.json();
+    if (dbData.insertedId) {
       Swal.fire({
-        icon: "error",
-        title: "Registration Failed",
-        text: error.message || "Something went wrong.",
+        title: "User created Successfully!",
+        icon: "success",
+        draggable: true,
       });
+      form.reset();
+      navigate("/");
     }
   };
 

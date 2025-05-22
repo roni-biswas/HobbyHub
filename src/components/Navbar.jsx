@@ -61,18 +61,18 @@ const Navbar = () => {
           All Groups
         </NavLink>
       </li>
+      <li>
+        <NavLink to="/create-group" className={navLinkClass}>
+          Create Group
+        </NavLink>
+      </li>
       {user && (
         <li>
-          <NavLink to="/create-group" className={navLinkClass}>
-            Create Group
+          <NavLink to={`/my-group/${user.email}`} className={navLinkClass}>
+            My Groups
           </NavLink>
         </li>
       )}
-      <li>
-        <NavLink to="/my-group" className={navLinkClass}>
-          My Groups
-        </NavLink>
-      </li>
       {!user ? (
         <li>
           <NavLink to="/login" className={navLinkClass}>
