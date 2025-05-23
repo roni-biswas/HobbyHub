@@ -21,7 +21,7 @@ const UpdateGroup = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/users/${user.email}`)
+      fetch(`https://papaya-hobby-server.vercel.app/users/${user.email}`)
         .then((res) => res.json())
         .then((data) => setUsers(data))
         .catch((err) => console.error("Error fetching user data:", err));
@@ -46,7 +46,7 @@ const UpdateGroup = () => {
     const updatedGroup = Object.fromEntries(formData.entries());
 
     // update user info in the db
-    fetch(`http://localhost:3000/groupsById/${_id}`, {
+    fetch(`https://papaya-hobby-server.vercel.app/groupsById/${_id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

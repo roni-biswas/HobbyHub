@@ -53,7 +53,7 @@ const Register = () => {
     };
 
     // Save to database
-    const dbRes = await fetch("http://localhost:3000/users", {
+    const dbRes = await fetch("https://papaya-hobby-server.vercel.app/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userProfile),
@@ -87,17 +87,20 @@ const Register = () => {
         try {
           // Check if user exists by email
           const res = await fetch(
-            `http://localhost:3000/users?email=${user.email}`
+            `https://papaya-hobby-server.vercel.app/users?email=${user.email}`
           );
           const existingUsers = await res.json();
 
           // If not found, register new user
           if (existingUsers.length === 0) {
-            const dbRes = await fetch("http://localhost:3000/users", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(userProfile),
-            });
+            const dbRes = await fetch(
+              "https://papaya-hobby-server.vercel.app/users",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userProfile),
+              }
+            );
             const dbData = await dbRes.json();
 
             if (dbData.insertedId) {

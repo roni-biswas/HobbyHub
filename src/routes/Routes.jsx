@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       {
         path: "all-groups",
         Component: AllGroups,
-        loader: () => fetch("http://localhost:3000/groups"),
+        loader: () => fetch("https://papaya-hobby-server.vercel.app/groups"),
         hydrateFallbackElement: <Loading />,
         handle: { title: "All Groups" },
       },
@@ -42,7 +42,9 @@ const router = createBrowserRouter([
       {
         path: "/my-group/:email",
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/groupsByEmail/${params.email}`),
+          fetch(
+            `https://papaya-hobby-server.vercel.app/groupsByEmail/${params.email}`
+          ),
         element: (
           <PrivetRoute>
             <MyGroups />
@@ -54,7 +56,9 @@ const router = createBrowserRouter([
       {
         path: "/group-details/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/groupsById/${params.id}`),
+          fetch(
+            `https://papaya-hobby-server.vercel.app/groupsById/${params.id}`
+          ),
         element: (
           <PrivetRoute>
             <GroupDetails />
@@ -66,7 +70,9 @@ const router = createBrowserRouter([
       {
         path: "/update-group/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/groupsById/${params.id}`),
+          fetch(
+            `https://papaya-hobby-server.vercel.app/groupsById/${params.id}`
+          ),
         element: (
           <PrivetRoute>
             <UpdateGroup />

@@ -21,7 +21,7 @@ const CreateGroup = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/users/${user.email}`)
+      fetch(`https://papaya-hobby-server.vercel.app/users/${user.email}`)
         .then((res) => res.json())
         .then((data) => setUserData(data))
         .catch((err) => console.error("Error fetching user data:", err));
@@ -35,7 +35,7 @@ const CreateGroup = () => {
     const groupData = Object.fromEntries(formData.entries());
 
     // create groups in db
-    fetch("http://localhost:3000/groups", {
+    fetch("https://papaya-hobby-server.vercel.app/groups", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

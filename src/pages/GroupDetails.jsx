@@ -20,7 +20,7 @@ const GroupDetails = () => {
   useEffect(() => {
     if (user?.email && group_name) {
       fetch(
-        `http://localhost:3000/is-joined?email=${user.email}&group_name=${group_name}`
+        `https://papaya-hobby-server.vercel.app/is-joined?email=${user.email}&group_name=${group_name}`
       )
         .then((res) => res.json())
         .then((data) => setAlreadyJoined(data.joined));
@@ -44,7 +44,7 @@ const GroupDetails = () => {
       lastSignInTime: user.metadata.lastSignInTime,
     };
 
-    fetch("http://localhost:3000/join-group", {
+    fetch("https://papaya-hobby-server.vercel.app/join-group", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

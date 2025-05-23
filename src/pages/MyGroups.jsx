@@ -10,7 +10,9 @@ const MyGroups = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/groupsByEmail/${user.email}`)
+      fetch(
+        `https://papaya-hobby-server.vercel.app/groupsByEmail/${user.email}`
+      )
         .then((res) => res.json())
         .then((data) => setGroups(data))
         .catch((err) => console.error("Failed to fetch groups:", err));
@@ -30,7 +32,7 @@ const MyGroups = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         // start deleting the options
-        fetch(`http://localhost:3000/groupsById/${_id}`, {
+        fetch(`https://papaya-hobby-server.vercel.app/groupsById/${_id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())
