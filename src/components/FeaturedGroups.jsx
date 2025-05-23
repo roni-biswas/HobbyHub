@@ -71,9 +71,9 @@ const FeaturedGroups = () => {
           Swal.fire({
             title: "Successfully joined the group!",
             icon: "success",
-            confirmButtonText: "Go to My Groups",
+            confirmButtonText: "Go to all Groups",
           }).then(() => {
-            navigate(`/all-group/${user.email}`);
+            navigate(`/all-groups`);
           });
 
           // Update joined status locally to disable the button immediately
@@ -137,14 +137,14 @@ const FeaturedGroups = () => {
                   <div className="pt-3">
                     <button
                       onClick={() => handleJoinGroup(group.group_name)}
-                      disabled={joinedStatus[group.group_name]}
+                      disabled={user ? joinedStatus[group.group_name] : false} // disable only if user logged in & joined
                       className={`btn ${
-                        joinedStatus[group.group_name]
+                        user && joinedStatus[group.group_name]
                           ? "bg-gray-300 cursor-not-allowed"
                           : "btn-secondary"
                       }`}
                     >
-                      {joinedStatus[group.group_name]
+                      {user && joinedStatus[group.group_name]
                         ? "Already Joined"
                         : "Join Group"}
                     </button>

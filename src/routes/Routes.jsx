@@ -20,12 +20,14 @@ const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+        handle: { title: "Home page" },
       },
       {
         path: "all-groups",
         Component: AllGroups,
         loader: () => fetch("http://localhost:3000/groups"),
         hydrateFallbackElement: <Loading />,
+        handle: { title: "All Groups" },
       },
       // authentication/authorization route
       {
@@ -35,6 +37,7 @@ const router = createBrowserRouter([
             <CreateGroup />
           </PrivetRoute>
         ),
+        handle: { title: "Create Group" },
       },
       {
         path: "/my-group/:email",
@@ -46,6 +49,7 @@ const router = createBrowserRouter([
           </PrivetRoute>
         ),
         hydrateFallbackElement: <Loading />,
+        handle: { title: "My Group" },
       },
       {
         path: "/group-details/:id",
@@ -57,6 +61,7 @@ const router = createBrowserRouter([
           </PrivetRoute>
         ),
         hydrateFallbackElement: <Loading />,
+        handle: { title: "Group Details Page" },
       },
       {
         path: "/update-group/:id",
@@ -68,15 +73,18 @@ const router = createBrowserRouter([
           </PrivetRoute>
         ),
         hydrateFallbackElement: <Loading />,
+        handle: { title: "Update Group" },
       },
       // user login/registration
       {
         path: "login",
         Component: Login,
+        handle: { title: "Login" },
       },
       {
         path: "register",
         Component: Register,
+        handle: { title: "Registration" },
       },
     ],
   },
