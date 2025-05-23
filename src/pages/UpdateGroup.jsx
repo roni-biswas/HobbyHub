@@ -98,9 +98,7 @@ const UpdateGroup = () => {
               defaultValue={category}
               className="select select-bordered w-full"
             >
-              <option disabled defaultValue="">
-                Select a category
-              </option>
+              <option disabled>Select a category</option>
               {categories.map((cat, idx) => (
                 <option key={idx} value={cat}>
                   {cat}

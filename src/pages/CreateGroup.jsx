@@ -75,6 +75,7 @@ const CreateGroup = () => {
               name="group_name"
               placeholder="Enter group name"
               className="input input-bordered w-full"
+              required
             />
           </div>
 
@@ -82,12 +83,17 @@ const CreateGroup = () => {
             <label className="label font-semibold text-base-300">
               Hobby Category
             </label>
-            <select name="category" className="select select-bordered w-full">
-              <option disabled selected>
+            <select
+              name="category"
+              className="select select-bordered w-full"
+              defaultValue=""
+              required
+            >
+              <option value="" disabled>
                 Select a category
               </option>
               {categories.map((category, idx) => (
-                <option key={idx} defaultValue={category}>
+                <option key={idx} value={category}>
                   {category}
                 </option>
               ))}
@@ -104,6 +110,7 @@ const CreateGroup = () => {
                 name="description"
                 className="input input-bordered w-full py-0"
                 placeholder="Write a short description..."
+                required
               ></input>
             </div>
           </div>
@@ -117,6 +124,7 @@ const CreateGroup = () => {
               name="location"
               placeholder="Enter location"
               className="input input-bordered w-full"
+              required
             />
           </div>
 
@@ -129,6 +137,7 @@ const CreateGroup = () => {
               name="max_members"
               placeholder="e.g. 10"
               className="input input-bordered w-full"
+              required
             />
           </div>
 
@@ -140,6 +149,7 @@ const CreateGroup = () => {
               type="date"
               name="date"
               className="input input-bordered w-full"
+              required
             />
           </div>
 
@@ -152,6 +162,7 @@ const CreateGroup = () => {
               name="photo_url"
               placeholder="https://example.com/image.jpg"
               className="input input-bordered w-full"
+              required
             />
           </div>
 

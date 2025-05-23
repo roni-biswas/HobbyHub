@@ -1,6 +1,12 @@
-import { useLoaderData } from "react-router";
+import { use, useEffect, useState } from "react";
+import { useLoaderData, useNavigate } from "react-router";
+import { AuthContext } from "../context/AuthContext";
+import Swal from "sweetalert2";
 
 const GroupDetails = () => {
+  const { user } = use(AuthContext);
+  const [alreadyJoined, setAlreadyJoined] = useState(false);
+  const navigate = useNavigate();
   const {
     group_name,
     description,
@@ -11,9 +17,63 @@ const GroupDetails = () => {
     photo_url,
   } = useLoaderData() || {};
 
+  useEffect(() => {
+    if (user?.email && group_name) {
+      fetch(
+        `http://localhost:3000/is-joined?email=${user.email}&group_name=${group_name}`
+      )
+        .then((res) => res.json())
+        .then((data) => setAlreadyJoined(data.joined));
+    }
+  }, [user?.email, group_name]);
+
   const today = new Date();
   const groupStartDate = new Date(date);
   const isPastStartDate = today > groupStartDate;
+
+  const handleJoinGroup = () => {
+    if (!user) return;
+
+    const todayDate = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
+
+    const joinData = {
+      group_name,
+      date: todayDate, // Use today's date instead of group's start date
+      email: user.email,
+      creationTime: user.metadata.creationTime,
+      lastSignInTime: user.metadata.lastSignInTime,
+    };
+
+    fetch("http://localhost:3000/join-group", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(joinData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success || data.insertedId) {
+          Swal.fire({
+            title: "Successfully joined the group!",
+            icon: "success",
+            confirmButtonText: "Go to My Groups",
+          }).then(() => {
+            navigate(`/all-groups`);
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Failed to join group.",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error("Error joining group:", err);
+        alert("Something went wrong.");
+      });
+  };
 
   return (
     <div className="min-h-screen px-4 py-24 pt-32 ">
@@ -57,15 +117,21 @@ const GroupDetails = () => {
         {/* Join Button */}
         <div className="text-center pt-4">
           <button
+            onClick={handleJoinGroup}
+            disabled={isPastStartDate || alreadyJoined}
             className={`btn text-base px-6 py-2 rounded-xl transition 
-          ${
-            isPastStartDate
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "btn-secondary text-white hover:scale-105"
-          }`}
-            disabled={isPastStartDate}
+    ${
+      isPastStartDate || alreadyJoined
+        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+        : "btn-secondary text-white hover:scale-105"
+    }
+  `}
           >
-            {isPastStartDate ? "Group Already Started" : "Join Group"}
+            {isPastStartDate
+              ? "Group Already Started"
+              : alreadyJoined
+              ? "Already Joined"
+              : "Join Group"}
           </button>
         </div>
       </div>
