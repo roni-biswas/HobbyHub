@@ -48,7 +48,7 @@ const Hero = () => {
           <SwiperSlide key={index} className="w-full relative">
             <img
               src={slide.image}
-              className="w-full min-h-[calc(100vh-81px)] object-cover"
+              className="w-full h-[70vh] object-cover"
               alt={`Slide ${index + 1}`}
             />
 
@@ -56,7 +56,7 @@ const Hero = () => {
             <div className="absolute inset-0 bg-black/70 z-10" />
 
             {/* Animated Content */}
-            <div className="absolute flex items-center h-full left-0 top-0 w-full p-10 z-20 max-w-screen-7xl mx-auto px-4 md:px-12 lg:px-16 xl:px-24">
+            <div className="absolute flex items-center h-[70vh] left-0 top-0 w-full p-10 z-20 max-w-screen-7xl mx-auto px-4 md:px-12 lg:px-16 xl:px-24">
               <motion.div
                 key={slide.title}
                 initial={{ opacity: 0, y: 50 }}
@@ -70,7 +70,10 @@ const Hero = () => {
                 <p className="mb-4 text-sm md:text-base text-gray-100">
                   {slide.description}
                 </p>
-                <Link className="btn btn-secondary btn-sm md:btn-md">
+                <Link
+                  to="/all-groups"
+                  className="btn btn-secondary text-black btn-sm md:btn-md"
+                >
                   Explore Now
                 </Link>
               </motion.div>

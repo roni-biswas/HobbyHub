@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 
 const ThemeToggle = () => {
+  /* ── 1. figure out the very first theme ───────────────── */
   const getInitialTheme = () => {
-    // Check localStorage first
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme) return storedTheme;
-
-    // Otherwise, use OS preference
+    const saved = localStorage.getItem("theme");
+    if (saved) return saved;
     return window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
       : "light";
@@ -14,31 +12,35 @@ const ThemeToggle = () => {
 
   const [theme, setTheme] = useState(getInitialTheme);
 
+  /* ── 2. whenever theme changes, update <html> + storage ── */
   useEffect(() => {
-    // Set DaisyUI theme
-    document.documentElement.setAttribute("data-theme", theme);
-
-    // Also set Tailwind's dark mode class
-    document.documentElement.classList.toggle("dark", theme === "dark");
-
-    // Save theme preference
+    document.documentElement.setAttribute("data-theme", theme); // DaisyUI
+    document.documentElement.classList.toggle("dark", theme === "dark"); // Tailwind
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  const isDark = theme === "dark";
+
+  /* ── 3. UI (DaisyUI “swap” button) ─────────────────────── */
   return (
-    <label className="swap swap-rotate mx-4">
-      {/* this hidden checkbox controls the state */}
+    <label className="swap swap-rotate mx-4 cursor-pointer">
+      {/* The checkbox controls swap-on / swap-off */}
       <input
-        onChange={() => setTheme(theme === "light" ? "dark" : "light")}
         type="checkbox"
-        className="theme-controller"
+        checked={isDark}
+        onChange={() => setTheme(isDark ? "light" : "dark")}
+        className="hidden"
       />
 
-      {/* sun icon */}
-      <span className="swap-off btn btn-sm  p-2 text-white py-3">🌞 Light</span>
+      {/* 🌞 shows while NOT checked */}
+      <span className="swap-off btn btn-sm bg-primary text-black border-0">
+        🌞 Light
+      </span>
 
-      {/* moon icon */}
-      <span className="swap-on btn btn-sm p-2 text-white">🌙 Dark</span>
+      {/* 🌙 shows while checked */}
+      <span className="swap-on btn btn-sm bg-black text-white border-0">
+        🌙 Dark
+      </span>
     </label>
   );
 };

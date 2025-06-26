@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 const Footer = () => {
   return (
-    <footer className="px-4 divide-y bg-base-200  text-gray-100">
+    <footer className="px-4 divide-y bg-gray-900  text-gray-100">
       <div className="max-w-screen-7xl px-4 md:px-12 lg:px-16 xl:px-24 flex flex-col justify-between py-10 mx-auto space-y-8 lg:flex-row lg:space-y-0">
         <aside>
           <img className="w-[180px]" src={brandLogo} alt="Brand Logo" />

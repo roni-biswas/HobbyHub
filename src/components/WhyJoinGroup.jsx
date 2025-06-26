@@ -1,5 +1,3 @@
-import { Fade, Slide } from "react-awesome-reveal";
-
 const WhyJoinGroup = () => {
   const benefits = [
     {
@@ -41,7 +39,7 @@ const WhyJoinGroup = () => {
   ];
 
   return (
-    <section className="bg-gradient-to-b from-indigo-50 to-white px-4 py-14 md:py-20">
+    <section className="bg-gradient-to-b from-indigo-300 to-white px-4 py-14 md:py-20">
       <div className="text-center max-w-screen-7xl mx-auto px-4 md:px-12 lg:px-16 xl:px-24">
         <h2 className="text-xl md:text-2xl text-gray-950 font-bold mb-4">
           🌟 Why Join a Hobby Group?
@@ -52,20 +50,21 @@ const WhyJoinGroup = () => {
           personal and social life.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <Fade cascade damping={0.1}>
-            {benefits.map((item, index) => (
-              <div
-                key={index}
-                className="bg-white p-6 rounded-xl shadow-md hover:shadow-indigo-200 border border-indigo-100 transition hover:scale-105"
-              >
-                <div className="text-4xl mb-4">{item.icon}</div>
-                <h3 className="text-xl font-semibold text-primary mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-gray-600 text-sm">{item.description}</p>
-              </div>
-            ))}
-          </Fade>
+          {benefits.map((item, index) => (
+            <div
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
+              data-aos-duration="800"
+              key={index}
+              className="bg-white p-6 rounded-xl shadow-md hover:shadow-indigo-200 border border-indigo-100 transition hover:scale-105"
+            >
+              <div className="text-4xl mb-4">{item.icon}</div>
+              <h3 className="text-xl font-semibold text-primary mb-2">
+                {item.title}
+              </h3>
+              <p className="text-gray-600 text-sm">{item.description}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

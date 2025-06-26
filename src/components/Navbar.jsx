@@ -1,4 +1,5 @@
-import React, { use, useEffect, useState } from "react";
+// src/components/Navbar.jsx
+import React, { useEffect, useState, useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
 import brandLogo from "../assets/brand-logo.png";
 import avatarIcon from "../assets/avatar.png";
@@ -8,47 +9,56 @@ import Swal from "sweetalert2";
 import { Tooltip } from "react-tooltip";
 
 const Navbar = () => {
-  const { user, signOutUser } = use(AuthContext);
+  const { user, signOutUser } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-  const navigate = useNavigate();
+
+  /* ── sticky state ─────────────────────────── */
+  const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
-    if (user?.email) {
-      fetch(`https://papaya-hobby-server.vercel.app/users/${user.email}`)
-        .then((res) => res.json())
-        .then((data) => setUserData(data))
-        .catch((err) => console.error("Error fetching user data:", err));
-    }
+    const onScroll = () => setIsSticky(window.scrollY > 80);
+    onScroll(); // run once on mount
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  /* ── fetch user info ───────────────────────── */
+  useEffect(() => {
+    if (!user?.email) return;
+    fetch(`https://papaya-hobby-server.vercel.app/users/${user.email}`)
+      .then((res) => res.json())
+      .then(setUserData)
+      .catch((err) => console.error("Error fetching user data:", err));
   }, [user?.email]);
+
+  const navigate = useNavigate();
 
   const handleLogOut = () => {
     Swal.fire({
       title: "Are you sure?",
-      text: "you want to be logout!",
+      text: "You want to logout!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Logout it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // user sign out
+      confirmButtonText: "Yes, logout!",
+    }).then((r) => {
+      if (r.isConfirmed) {
         signOutUser().then(() => {
-          Swal.fire({
-            title: "Logout!",
-            text: "You are successfully logged out!",
-            icon: "success",
-          });
+          Swal.fire("Logged out!", "", "success");
           navigate("/");
         });
       }
     });
   };
 
+  /* ── link helpers ──────────────────────────── */
   const navLinkClass = ({ isActive }) =>
-    `inline-block text-sm uppercase after:duration-1000 ease-out after:block after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-red-500 after:transition-transform hover:after:origin-bottom-left hover:after:scale-x-100 ${
-      isActive ? "text-primary" : ""
-    }`;
+    `inline-block text-sm uppercase after:duration-1000 ease-out after:block
+     after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0
+     after:bg-red-500 after:transition-transform hover:after:origin-bottom-left
+     hover:after:scale-x-100 ${isActive ? "text-primary" : ""}`;
+
   const links = (
     <>
       <li>
@@ -66,6 +76,7 @@ const Navbar = () => {
           Create Group
         </NavLink>
       </li>
+
       {user && (
         <li>
           <NavLink to={`/my-group/${user.email}`} className={navLinkClass}>
@@ -73,6 +84,7 @@ const Navbar = () => {
           </NavLink>
         </li>
       )}
+
       {!user ? (
         <li>
           <NavLink to="/login" className={navLinkClass}>
@@ -83,7 +95,10 @@ const Navbar = () => {
         <li>
           <button
             onClick={handleLogOut}
-            className={`inline-block text-sm uppercase after:duration-1000 ease-out after:block after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-red-500 after:transition-transform hover:after:origin-bottom-left hover:after:scale-x-100 cursor-pointer`}
+            className="inline-block text-sm uppercase after:duration-1000
+                       after:block after:h-0.5 after:w-full after:bg-red-500
+                       after:origin-bottom-right after:scale-x-0
+                       hover:after:origin-bottom-left hover:after:scale-x-100"
           >
             Logout
           </button>
@@ -91,14 +106,21 @@ const Navbar = () => {
       )}
     </>
   );
+
+  /* ── header classes (sticky vs top) ────────── */
+  const headerBase = "top-0 left-0 right-0 z-50 transition-colors duration-300";
+  const headerSticky =
+    "sticky backdrop-blur-lg bg-accent/30 border-b border-white/30 shadow-md";
+  const headerAtTop = "bg-accent border-b border-white/10 shadow-none";
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 border-b-1 border-b-white/40 bg-opacity-30 shadow-md backdrop-blur-lg bg-base-100/30
-        }`}
+      className={`${headerBase} ${isSticky ? headerSticky : headerAtTop}`}
     >
       <div className="navbar p-0 py-3 max-w-screen-7xl mx-auto px-4 md:px-12 lg:px-16 xl:px-24">
+        {/* ─────── start (logo + mobile menu) ─────── */}
         <div className="navbar-start">
-          {/* Dropdown for mobile */}
+          {/* mobile dropdown */}
           <div className="dropdown">
             <div tabIndex={0} role="button" className="p-0 mr-3 lg:hidden">
               <svg
@@ -116,40 +138,41 @@ const Navbar = () => {
                 />
               </svg>
             </div>
+
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-4 p-2 shadow-sm bg-base-100 text-base-content rounded-box w-[200px] left-0 top-full z-50 [&>*]:font-bold"
+              className="menu menu-sm dropdown-content mt-4 p-2 shadow-sm
+                         bg-base-100 text-base-content rounded-box w-[200px]
+                         left-0 top-full z-50 [&>*]:font-bold"
             >
               {links}
-              <div>
+              <li>
                 <ThemeToggle />
-              </div>
+              </li>
             </ul>
           </div>
 
           <Link to="/" className="w-[180px]">
-            <img className="w-full" src={brandLogo} alt="Brand Logo" />
+            <img src={brandLogo} alt="Brand Logo" className="w-full" />
           </Link>
         </div>
 
-        <div className="navbar-end hidden lg:flex">
-          <ul className="flex gap-4 px-1 [&>*]:font-bold ">{links}</ul>
+        {/* ─────── end (links + toggle + avatar) ─────── */}
+        <div className="navbar-end hidden lg:flex items-center">
+          <ul className="flex gap-4 px-1 [&>*]:font-bold">{links}</ul>
 
-          {/* Theme and Profile */}
           <ThemeToggle />
-          {/* profiles */}
-          {user && userData ? (
+
+          {user && userData && (
             <div
-              className="avatar"
+              className="avatar ml-3"
               data-tooltip-id="my-tooltip"
               data-tooltip-content={userData.name}
             >
-              <div className="ring-primary ring-offset-base-100 w-7 rounded-full ring-2 ring-offset-2">
+              <div className="w-7 rounded-full ring-2 ring-primary ring-offset-2 ring-offset-base-100">
                 <img src={userData.photo_url || avatarIcon} />
               </div>
             </div>
-          ) : (
-            ""
           )}
           <Tooltip id="my-tooltip" />
         </div>
