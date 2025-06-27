@@ -25,7 +25,7 @@ const Navbar = () => {
   /* ── fetch user info ───────────────────────── */
   useEffect(() => {
     if (!user?.email) return;
-    fetch(`https://papaya-hobby-server.vercel.app/users/${user.email}`)
+    fetch(`http://localhost:3000/users/${user.email}`)
       .then((res) => res.json())
       .then(setUserData)
       .catch((err) => console.error("Error fetching user data:", err));
@@ -71,20 +71,14 @@ const Navbar = () => {
           All Groups
         </NavLink>
       </li>
-      <li>
-        <NavLink to="/create-group" className={navLinkClass}>
-          Create Group
-        </NavLink>
-      </li>
 
       {user && (
         <li>
-          <NavLink to={`/my-group/${user.email}`} className={navLinkClass}>
-            My Groups
+          <NavLink to={`/dashboard`} className={navLinkClass}>
+            Dashboard
           </NavLink>
         </li>
       )}
-
       {!user ? (
         <li>
           <NavLink to="/login" className={navLinkClass}>
@@ -111,7 +105,8 @@ const Navbar = () => {
   const headerBase = "top-0 left-0 right-0 z-50 transition-colors duration-300";
   const headerSticky =
     "sticky backdrop-blur-lg bg-accent/30 border-b border-white/30 shadow-md";
-  const headerAtTop = "bg-accent border-b border-white/10 shadow-none";
+  const headerAtTop =
+    "relative bg-accent border-b border-white/10 shadow-none z-20";
 
   return (
     <header

@@ -10,9 +10,7 @@ const MyGroups = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(
-        `https://papaya-hobby-server.vercel.app/groupsByEmail/${user.email}`
-      )
+      fetch(`${import.meta.env.VITE_base_url}/groupsByEmail/${user.email}`)
         .then((res) => res.json())
         .then((data) => setGroups(data))
         .catch((err) => console.error("Failed to fetch groups:", err));
@@ -32,7 +30,7 @@ const MyGroups = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         // start deleting the options
-        fetch(`https://papaya-hobby-server.vercel.app/groupsById/${_id}`, {
+        fetch(`${import.meta.env.VITE_base_url}/groupsById/${_id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())
@@ -56,7 +54,7 @@ const MyGroups = () => {
   };
 
   return (
-    <div className="max-w-screen-7xl mx-auto px-4 md:px-12 lg:px-16 xl:px-24 py-12 pt-32">
+    <div className=" px-4 py-8">
       <h1 className="text-3xl md:text-4xl font-bold text-center text-primary mb-8">
         All My Groups
       </h1>
@@ -105,15 +103,15 @@ const MyGroups = () => {
                   <td>{group.max_members}</td>
                   <td>{group.date}</td>
                   <td>
-                    <Link to={`/group-details/${group._id}`}>
+                    <Link to={`/dashboard/group-details/${group._id}`}>
                       <button className="btn btn-sm btn-secondary">
-                        See More
+                        Details
                       </button>
                     </Link>
                   </td>
                   <td>
                     <Link
-                      to={`/update-group/${group._id}`}
+                      to={`/dashboard/update-group/${group._id}`}
                       className="btn btn-sm btn-warning"
                     >
                       Update
@@ -164,11 +162,11 @@ const MyGroups = () => {
                 <strong>Start Date:</strong> {group.date}
               </p>
               <div className="flex flex-wrap gap-2 mt-2">
-                <Link to={`/group-details/${group._id}`}>
-                  <button className="btn btn-sm btn-primary">See More</button>
+                <Link to={`/dashboard/group-details/${group._id}`}>
+                  <button className="btn btn-sm btn-primary">Details</button>
                 </Link>
                 <Link
-                  to={`/update-group/${group._id}`}
+                  to={`/dashboard/update-group/${group._id}`}
                   className="btn btn-sm btn-warning"
                 >
                   Update

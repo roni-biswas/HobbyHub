@@ -57,14 +57,14 @@ const Login = () => {
         try {
           // Check if user exists by email
           const res = await fetch(
-            `https://papaya-hobby-server.vercel.app/users?email=${user.email}`
+            `${import.meta.env.VITE_base_url}/users?email=${user.email}`
           );
           const existingUsers = await res.json();
 
           // If not found, register new user
           if (existingUsers.length === 0) {
             const dbRes = await fetch(
-              "https://papaya-hobby-server.vercel.app/users",
+              `${import.meta.env.VITE_base_url}/users`,
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

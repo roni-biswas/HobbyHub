@@ -11,6 +11,8 @@ import Register from "../pages/Register";
 import GroupDetails from "../pages/GroupDetails";
 import UpdateGroup from "../pages/UpdateGroup";
 import Loading from "../components/Loading";
+import DashboardLayout from "../layouts/DashBoardLayout";
+import DashBoard from "../pages/Dashboard/DashBoard";
 
 const router = createBrowserRouter([
   {
@@ -25,62 +27,11 @@ const router = createBrowserRouter([
       {
         path: "all-groups",
         Component: AllGroups,
-        loader: () => fetch("https://papaya-hobby-server.vercel.app/groups"),
+        loader: () => fetch(`${import.meta.env.VITE_base_url}/groups`),
         hydrateFallbackElement: <Loading />,
         handle: { title: "All Groups" },
       },
-      // authentication/authorization route
-      {
-        path: "create-group",
-        element: (
-          <PrivetRoute>
-            <CreateGroup />
-          </PrivetRoute>
-        ),
-        handle: { title: "Create Group" },
-      },
-      {
-        path: "/my-group/:email",
-        loader: ({ params }) =>
-          fetch(
-            `https://papaya-hobby-server.vercel.app/groupsByEmail/${params.email}`
-          ),
-        element: (
-          <PrivetRoute>
-            <MyGroups />
-          </PrivetRoute>
-        ),
-        hydrateFallbackElement: <Loading />,
-        handle: { title: "My Group" },
-      },
-      {
-        path: "/group-details/:id",
-        loader: ({ params }) =>
-          fetch(
-            `https://papaya-hobby-server.vercel.app/groupsById/${params.id}`
-          ),
-        element: (
-          <PrivetRoute>
-            <GroupDetails />
-          </PrivetRoute>
-        ),
-        hydrateFallbackElement: <Loading />,
-        handle: { title: "Group Details Page" },
-      },
-      {
-        path: "/update-group/:id",
-        loader: ({ params }) =>
-          fetch(
-            `https://papaya-hobby-server.vercel.app/groupsById/${params.id}`
-          ),
-        element: (
-          <PrivetRoute>
-            <UpdateGroup />
-          </PrivetRoute>
-        ),
-        hydrateFallbackElement: <Loading />,
-        handle: { title: "Update Group" },
-      },
+
       // user login/registration
       {
         path: "login",
@@ -91,6 +42,54 @@ const router = createBrowserRouter([
         path: "register",
         Component: Register,
         handle: { title: "Registration" },
+      },
+    ],
+  },
+  // dashboard routes
+  {
+    path: "dashboard",
+    element: (
+      <PrivetRoute>
+        <DashboardLayout />
+      </PrivetRoute>
+    ),
+    children: [
+      {
+        index: true,
+        Component: DashBoard,
+      },
+      // authentication/authorization route
+      {
+        path: "/dashboard/create-group",
+        Component: CreateGroup,
+        hydrateFallbackElement: <Loading />,
+        handle: { title: "Create Group" },
+      },
+      {
+        path: "/dashboard/my-group/:email",
+        loader: ({ params }) =>
+          fetch(
+            `${import.meta.env.VITE_base_url}/groupsByEmail/${params.email}`
+          ),
+        Component: MyGroups,
+        hydrateFallbackElement: <Loading />,
+        handle: { title: "My Group" },
+      },
+      {
+        path: "/dashboard/group-details/:id",
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_base_url}/groupsById/${params.id}`),
+        Component: GroupDetails,
+        hydrateFallbackElement: <Loading />,
+        handle: { title: "Group Details Page" },
+      },
+      {
+        path: "/dashboard/update-group/:id",
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_base_url}/groupsById/${params.id}`),
+        Component: UpdateGroup,
+        hydrateFallbackElement: <Loading />,
+        handle: { title: "Update Group" },
       },
     ],
   },

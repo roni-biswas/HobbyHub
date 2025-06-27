@@ -11,7 +11,7 @@ const FeaturedGroups = () => {
 
   // Fetch featured groups
   useEffect(() => {
-    fetch("https://papaya-hobby-server.vercel.app/featured-groups")
+    fetch(`${import.meta.env.VITE_base_url}/featured-groups`)
       .then((res) => res.json())
       .then((data) => setFeaturedGroups(data))
       .catch((err) => console.error("Error fetching featured groups:", err));
@@ -24,7 +24,7 @@ const FeaturedGroups = () => {
     // For all featured groups, check join status
     featuredGroups.forEach((group) => {
       fetch(
-        `https://papaya-hobby-server.vercel.app/is-joined?email=${
+        `${import.meta.env.VITE_base_url}/is-joined?email=${
           user.email
         }&group_name=${encodeURIComponent(group.group_name)}`
       )
@@ -57,7 +57,7 @@ const FeaturedGroups = () => {
       lastSignInTime: user.metadata.lastSignInTime,
     };
 
-    fetch("https://papaya-hobby-server.vercel.app/join-group", {
+    fetch(`${import.meta.env.VITE_base_url}/join-group`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

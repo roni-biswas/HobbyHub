@@ -20,7 +20,9 @@ const GroupDetails = () => {
   useEffect(() => {
     if (user?.email && group_name) {
       fetch(
-        `https://papaya-hobby-server.vercel.app/is-joined?email=${user.email}&group_name=${group_name}`
+        `${import.meta.env.VITE_base_url}/is-joined?email=${
+          user.email
+        }&group_name=${group_name}`
       )
         .then((res) => res.json())
         .then((data) => setAlreadyJoined(data.joined));
@@ -44,7 +46,7 @@ const GroupDetails = () => {
       lastSignInTime: user.metadata.lastSignInTime,
     };
 
-    fetch("https://papaya-hobby-server.vercel.app/join-group", {
+    fetch(`${import.meta.env.VITE_base_url}/join-group`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +61,7 @@ const GroupDetails = () => {
             icon: "success",
             confirmButtonText: "Go to My Groups",
           }).then(() => {
-            navigate(`/all-groups`);
+            navigate(`/dashboard/my-groups`);
           });
         } else {
           Swal.fire({
@@ -76,7 +78,7 @@ const GroupDetails = () => {
   };
 
   return (
-    <div className="min-h-screen px-4 py-24 pt-32 ">
+    <div className="px-4 py-8">
       <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-6 md:p-10 space-y-8">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row items-center gap-8">

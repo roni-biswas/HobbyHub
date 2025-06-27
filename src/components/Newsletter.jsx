@@ -7,9 +7,12 @@ const Newsletter = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("http://localhost:3000/newsletter", {
-        email: data.email,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_base_url}/newsletter`,
+        {
+          email: data.email,
+        }
+      );
 
       if (response.status === 200 || response.data.success) {
         Swal.fire({
@@ -51,7 +54,7 @@ const Newsletter = () => {
             type="email"
             {...register("email", { required: true })}
             placeholder="Enter your email"
-            className="input input-bordered w-full sm:w-[300px] text-base-300"
+            className="input input-bordered w-full sm:w-[300px] text-gray-300"
           />
           <button type="submit" className="btn btn-secondary w-full sm:w-auto">
             Subscribe

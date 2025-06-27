@@ -21,7 +21,7 @@ const CreateGroup = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`https://papaya-hobby-server.vercel.app/users/${user.email}`)
+      fetch(`${import.meta.env.VITE_base_url}/users/${user.email}`)
         .then((res) => res.json())
         .then((data) => setUserData(data))
         .catch((err) => console.error("Error fetching user data:", err));
@@ -35,7 +35,7 @@ const CreateGroup = () => {
     const groupData = Object.fromEntries(formData.entries());
 
     // create groups in db
-    fetch("https://papaya-hobby-server.vercel.app/groups", {
+    fetch(`${import.meta.env.VITE_base_url}/groups`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,13 +51,13 @@ const CreateGroup = () => {
             draggable: true,
           });
           form.reset();
-          navigate(`/my-group/${user.email}`);
+          navigate(`/dashboard/my-group/${user.email}`);
         }
       });
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-24 pt-32">
+    <div className="min-h-screen flex items-center justify-center px-4 ">
       <div className="bg-white/80 backdrop-blur-lg shadow-xl p-8 md:p-10 rounded-2xl w-full max-w-3xl border border-gray-200">
         <h2 className="text-3xl font-bold text-center text-primary mb-6">
           Create a New Hobby Group

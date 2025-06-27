@@ -21,7 +21,7 @@ const UpdateGroup = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`https://papaya-hobby-server.vercel.app/users/${user.email}`)
+      fetch(`${import.meta.env.VITE_base_url}/users/${user.email}`)
         .then((res) => res.json())
         .then((data) => setUsers(data))
         .catch((err) => console.error("Error fetching user data:", err));
@@ -46,7 +46,7 @@ const UpdateGroup = () => {
     const updatedGroup = Object.fromEntries(formData.entries());
 
     // update user info in the db
-    fetch(`https://papaya-hobby-server.vercel.app/groupsById/${_id}`, {
+    fetch(`${import.meta.env.VITE_base_url}/groupsById/${_id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -61,13 +61,13 @@ const UpdateGroup = () => {
             icon: "success",
             draggable: true,
           });
-          navigate(`/my-group/${users.email}`);
+          navigate(`/dashboard/my-group/${users.email}`);
         }
       });
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-24 pt-32">
+    <div className="px-4 py-8 flex items-center justify-center min-h-screen">
       <div className="bg-white/80 backdrop-blur-lg shadow-xl p-8 md:p-10 rounded-2xl w-full max-w-3xl border border-gray-200">
         <h2 className="text-3xl font-bold text-center text-primary mb-6">
           Update Hobby Group
