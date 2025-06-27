@@ -14,6 +14,7 @@ import Loading from "../components/Loading";
 import DashboardLayout from "../layouts/DashBoardLayout";
 import DashBoard from "../pages/Dashboard/DashBoard";
 import AboutUs from "../pages/AboutUs";
+import Contact from "../pages/Contact";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,11 @@ const router = createBrowserRouter([
         path: "about-us",
         Component: AboutUs,
         handle: { title: "About Us" },
+      },
+      {
+        path: "contact-us",
+        Component: Contact,
+        handle: { title: "Contact Us" },
       },
 
       // user login/registration
