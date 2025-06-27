@@ -104,7 +104,7 @@ const FeaturedGroups = () => {
               key={group._id}
               data-aos="fade-up"
               data-aos-duration="800"
-              data-aos-delay={(group._id % 5) * 100} // stagger animation
+              data-aos-delay={`${(group._id % 5) * 100}`} // stagger animation
               data-aos-easing="ease-in-out"
               className="card h-full flex flex-col bg-white shadow-lg hover:shadow-indigo-300 hover:scale-[1.02] transition rounded-xl overflow-hidden"
             >
@@ -138,7 +138,7 @@ const FeaturedGroups = () => {
                     className={`btn ${
                       user && joinedStatus[group.group_name]
                         ? "bg-gray-300 cursor-not-allowed"
-                        : "btn-secondary"
+                        : "btn-primary"
                     }`}
                   >
                     {user && joinedStatus[group.group_name]
