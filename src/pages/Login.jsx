@@ -107,7 +107,7 @@ const Login = () => {
 
   return (
     <div className="py-16 pt-18 md:py-24 px-4">
-      <div className="card bg-base-200 w-full mx-auto max-w-sm shrink-0 sm:shadow-2xl my-8">
+      <div className="card bg-base-200 w-full mx-auto max-w-sm shrink-0 sm:shadow-md my-8">
         <div className="card-body">
           <h2 className="text-2xl text-center font-semibold text-primary my-5">
             Login your Account
@@ -135,7 +135,7 @@ const Login = () => {
             <button type="submit" className="btn btn-secondary mt-4">
               Login
             </button>
-            <p className="text-gray-300 text-center font-semibold pt-3">
+            <p className="text-gray-500 text-center font-semibold pt-3">
               Don't Have An Account?{" "}
               <Link className="text-primary" to="/register">
                 Register

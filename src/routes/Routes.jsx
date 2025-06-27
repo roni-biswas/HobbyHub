@@ -31,6 +31,14 @@ const router = createBrowserRouter([
         hydrateFallbackElement: <Loading />,
         handle: { title: "All Groups" },
       },
+      {
+        path: "group-details/:id",
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_base_url}/groupsById/${params.id}`),
+        Component: GroupDetails,
+        hydrateFallbackElement: <Loading />,
+        handle: { title: "Group Details Page" },
+      },
 
       // user login/registration
       {

@@ -34,7 +34,16 @@ const GroupDetails = () => {
   const isPastStartDate = today > groupStartDate;
 
   const handleJoinGroup = () => {
-    if (!user) return;
+    if (!user) {
+      Swal.fire({
+        title: "Please log in to join the group",
+        icon: "warning",
+        confirmButtonText: "Log In",
+      }).then(() => {
+        navigate("/login");
+      });
+      return;
+    }
 
     const todayDate = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
 
