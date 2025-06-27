@@ -71,6 +71,11 @@ const Navbar = () => {
           All Groups
         </NavLink>
       </li>
+      <li>
+        <NavLink to="/about-us" className={navLinkClass}>
+          About Us
+        </NavLink>
+      </li>
 
       {user && (
         <li>

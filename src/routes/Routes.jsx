@@ -13,6 +13,7 @@ import UpdateGroup from "../pages/UpdateGroup";
 import Loading from "../components/Loading";
 import DashboardLayout from "../layouts/DashBoardLayout";
 import DashBoard from "../pages/Dashboard/DashBoard";
+import AboutUs from "../pages/AboutUs";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,11 @@ const router = createBrowserRouter([
         Component: GroupDetails,
         hydrateFallbackElement: <Loading />,
         handle: { title: "Group Details Page" },
+      },
+      {
+        path: "about-us",
+        Component: AboutUs,
+        handle: { title: "About Us" },
       },
 
       // user login/registration
