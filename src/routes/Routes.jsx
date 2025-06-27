@@ -12,9 +12,10 @@ import GroupDetails from "../pages/GroupDetails";
 import UpdateGroup from "../pages/UpdateGroup";
 import Loading from "../components/Loading";
 import DashboardLayout from "../layouts/DashBoardLayout";
-import DashBoard from "../pages/Dashboard/DashBoard";
 import AboutUs from "../pages/AboutUs";
 import Contact from "../pages/Contact";
+import DashboardOverview from "../pages/Dashboard/DashboardOverview";
+import DesAllGroups from "../pages/Dashboard/DesAllGroups";
 
 const router = createBrowserRouter([
   {
@@ -76,9 +77,18 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: DashBoard,
+        Component: DashboardOverview,
+        handle: { title: "Dashboard Home" },
       },
       // authentication/authorization route
+
+      {
+        path: "/dashboard/all-groups",
+        Component: DesAllGroups,
+        loader: () => fetch(`${import.meta.env.VITE_base_url}/groups`),
+        hydrateFallbackElement: <Loading />,
+        handle: { title: "All Groups" },
+      },
       {
         path: "/dashboard/create-group",
         Component: CreateGroup,

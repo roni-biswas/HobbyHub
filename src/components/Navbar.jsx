@@ -54,7 +54,7 @@ const Navbar = () => {
 
   /* ── link helpers ──────────────────────────── */
   const navLinkClass = ({ isActive }) =>
-    `inline-block text-sm uppercase after:duration-1000 ease-out after:block
+    `inline-block text-xs uppercase after:duration-1000 ease-out after:block
      after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0
      after:bg-red-500 after:transition-transform hover:after:origin-bottom-left
      hover:after:scale-x-100 ${isActive ? "text-primary" : ""}`;
@@ -73,12 +73,12 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink to="/about-us" className={navLinkClass}>
-          About Us
+          About
         </NavLink>
       </li>
       <li>
         <NavLink to="/contact-us" className={navLinkClass}>
-          Contact Us
+          Contact
         </NavLink>
       </li>
 
@@ -99,7 +99,7 @@ const Navbar = () => {
         <li>
           <button
             onClick={handleLogOut}
-            className="inline-block text-sm uppercase after:duration-1000
+            className="inline-block text-xs uppercase after:duration-1000
                        after:block after:h-0.5 after:w-full after:bg-red-500
                        after:origin-bottom-right after:scale-x-0
                        hover:after:origin-bottom-left hover:after:scale-x-100"
@@ -168,18 +168,16 @@ const Navbar = () => {
 
           <ThemeToggle />
 
-          {user && userData && (
+          {user && (
             <div
-              className="avatar ml-3"
-              data-tooltip-id="my-tooltip"
-              data-tooltip-content={userData.name}
+              className="avatar ml-3 tooltip tooltip-bottom"
+              data-tip={userData?.name || user.displayName || "User"}
             >
               <div className="w-7 rounded-full ring-2 ring-primary ring-offset-2 ring-offset-base-100">
-                <img src={userData.photo_url || avatarIcon} />
+                <img src={user && user.photoURL ? user.photoURL : avatarIcon} />
               </div>
             </div>
           )}
-          <Tooltip id="my-tooltip" />
         </div>
       </div>
     </header>
